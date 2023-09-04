@@ -4,13 +4,16 @@ CREATE TABLE users(
     name TEXT NOT NULL,
     email TEXT NOT NULL,
     password TEXT NOT NULL,
+    role TEXT NOT NULL,
     created_at TEXT DEFAULT(DATETIME()) NOT NULL
 );
 
-INSERT INTO users(id, name, email, password)
+DROP TABLE users;
+
+INSERT INTO users(id, name, email, role, password)
 VALUES
-("001", "Regiane", "regiane@email.com", "123"),
-("002", "Elvis", "elvis@email.com", "1235");
+("001", "Regiane", "regiane@email.com", "Normal", "123"),
+("002", "Elvis", "elvis@email.com","Normal", "1235");
 
 CREATE TABLE post(
     id TEXT PRIMARY KEY NOT NULL,

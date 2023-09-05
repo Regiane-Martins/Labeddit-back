@@ -4,11 +4,10 @@ import { USER_ROLES } from '../models/User'
 
 dotenv.config()
 
-// essa interface também pode ser alocada para outro arquivo
 export interface TokenPayload {
-    id: string,
+        id: string,
 		name: string,
-    role: USER_ROLES
+        role: USER_ROLES
 }
 
 export class TokenManager {

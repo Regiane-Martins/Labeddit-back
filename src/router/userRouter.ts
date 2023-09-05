@@ -18,3 +18,5 @@ export const userController = new UserController(
 )
 
 userRouter.post('/signup', userController.create)
+userRouter.get('/', userController.getUser)
+userRouter.post('/login', userController.login)

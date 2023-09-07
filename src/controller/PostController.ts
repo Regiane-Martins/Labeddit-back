@@ -6,6 +6,7 @@ import { BaseError } from "../errors/BaseError";
 import { postGetAllSchema } from "../dtos/posts/postGet.dto";
 import { postUpdateSchema } from "../dtos/posts/postUpdate.tdo";
 import { postDeleteSchema } from "../dtos/posts/postDelete.dto";
+import { likeDislikeSchema } from "../dtos/posts/postLikeDislike.dto";
 
 export class PostController {
     constructor(
@@ -99,5 +100,31 @@ export class PostController {
                 res.status(500).send("Erro inesperado")
             } 
         }
+    }
+
+
+    public likeDislike = async (req: Request, res: Response) =>{
+        try {
+            const input = likeDislikeSchema.parse({
+                id: req.params.id,
+                like: req.body.like,
+                token: req.headers.authorization
+            })
+    
+            await this.postBusines.likeDislike(input)
+    
+            res.sendStatus(200)
+        } catch (error) {
+            console.log(error);
+            
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues)
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
+        
     }
 }

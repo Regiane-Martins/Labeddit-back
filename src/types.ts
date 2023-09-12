@@ -27,3 +27,20 @@ export interface LikeDislikeDB {
     user_id: string,
     like: number
 }
+
+export interface CommentsDB {
+    id: string,
+    post_id: string,
+    creator_id: string,
+    content: string,
+    like: number,
+    dislike: number,
+    created_at: string,
+    updated_at: string
+}
+
+export interface CommentUserDB extends CommentsDB {
+    userId: string,
+    postId: string
+    userName: string
+}

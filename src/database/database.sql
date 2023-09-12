@@ -31,3 +31,15 @@ CREATE TABLE
         FOREIGN KEY (post_id) REFERENCES post(id)
     );
 
+CREATE TABLE comments (
+    id TEXT PRIMARY KEY NOT NULL,
+    post_id TEXT NOT NULL,
+    creator_id TEXT NOT NULL,
+    content TEXT NOT NULL,
+    like INTEGER,
+    dislike INTEGER,
+    created_at TEXT DEFAULT(DATETIME()),
+    updated_at TEXT DEFAULT(DATETIME()),
+    FOREIGN KEY (creator_id) REFERENCES users(id),
+    FOREIGN KEY (post_id) REFERENCES post(id)
+);

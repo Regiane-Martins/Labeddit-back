@@ -2,7 +2,7 @@
 
 ![Badge](https://img.shields.io/badge/Status-Desenvolvimento-%237159c?style=for-the-badge&logo=ghost)
 
-### O Labook é uma rede social com o objetivo de promover a conexão e interação entre pessoas. Quem se cadastrar no aplicativo poderá criar e curtir publicações, além de comentar posts.
+### O Labeddit é uma rede social com o objetivo de promover a conexão e interação entre pessoas. Quem se cadastrar no aplicativo poderá criar e curtir publicações, além de comentar posts.
 
 # Índece
 

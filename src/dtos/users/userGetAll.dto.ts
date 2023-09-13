@@ -1,3 +1,4 @@
+
 export interface UserGetAllOutputDTO {
     id: string,
     name: string,

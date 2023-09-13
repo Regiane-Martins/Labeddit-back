@@ -4,6 +4,7 @@ import { TokenManagerMock } from '../../mocks/TokenManagerMock'
 import { HashManagerMock } from "../../mocks/HashManagerMock"
 import { UserDatabaseMock } from "../../mocks/UserDatabaseMock"
 import { userCreatedSchema } from "../../../src/dtos/users/userCreated.dto"
+import { ZodError } from "zod"
 
 describe("Testando modulos de insertUser", () => {
     const userBusiness = new UserBusiness(
@@ -35,5 +36,34 @@ describe("Testando modulos de insertUser", () => {
         })
 
        await expect(userBusiness.insertUser(input)).rejects.toThrow()
+    })
+
+    test("deve disparar erro se name tiver menos que 2 caracteres", async () => {
+        try {
+            const input = userCreatedSchema.parse({
+                name: "M",
+                email: "fulano@email.com",
+                password: "meguinha"
+            })
+        } catch (error) {
+            if(error instanceof ZodError){
+                expect(error.issues[0].message).toBe('String must contain at least 2 character(s)')
+                
+            }
+        }
+    })
+
+    test("deve disparar erro se password tiver menos que 5 caracteres", async () => {
+        try {
+            const input = userCreatedSchema.parse({
+                name: "Meg",
+                email: "meguinha@email.com",
+                password: "meg"
+            })
+        } catch (error) {
+            if(error instanceof ZodError){
+                expect(error.issues[0].message).toBe('String must contain at least 5 character(s)')    
+            }
+        }
     })
 })

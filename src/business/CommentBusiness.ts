@@ -1,4 +1,5 @@
 import { CommentDatabase } from "../database/CommentDatabase";
+import { PostDatabase } from "../database/PostDatabase";
 import { CommentCreateInputDTO } from "../dtos/comments/commentsCreate.dto";
 import { CommentDeleteInputDTO } from "../dtos/comments/commentsDelete.dto";
 import { CommentGetInputDTO, CommentsGetOutputDTO } from "../dtos/comments/commentsGet.dto";
@@ -13,6 +14,7 @@ import { CommentsDB } from "../types";
 export class CommentBusiness {
     constructor(
         private commentDatabase: CommentDatabase,
+        private postDatabase: PostDatabase,
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager
     ) { }
@@ -26,10 +28,13 @@ export class CommentBusiness {
         if (!payload) {
             throw new BadRequestError("token invalido")
         }
+        
+        const result = await this.postDatabase.findPostById(post_id)
 
-        if(!post_id){
+        if(!result){
             throw new BadRequestError("Post não encontrado.")
         }
+
 
         const newComment: CommentsDB = {
             id,

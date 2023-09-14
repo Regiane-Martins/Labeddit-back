@@ -12,7 +12,7 @@ export class TokenManagerMock {
       return "token-mock-fulano"
 
     } else {
-      // login de miguel (conta admin)
+      // login de ciclano (conta admin)
       return "token-mock-ciclano"
     }
   }
@@ -25,7 +25,7 @@ export class TokenManagerMock {
         role: USER_ROLES.NORMAL
       }
 
-    } else if (token === "token-mock-miguel") {
+    } else if (token === "token-mock-ciclano") {
       return {
         id: "id-mock-ciclano",
         name: "Ciclano",

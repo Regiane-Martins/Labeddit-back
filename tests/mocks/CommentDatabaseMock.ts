@@ -1,5 +1,5 @@
 import { BaseDatabase } from "../../src/database/Basedatabase";
-import { CommentsDB, CommentUserDB } from "../../src/types";
+import { CommentsDB, CommentUserDB, LikeDislikeCommentDB } from "../../src/types";
 
 const commentMock: CommentsDB[] = [
     {
@@ -22,8 +22,8 @@ const userMock = [{
 
 const likesDislikesMock = [
     {
-        post_id: "xxxxx",
-        user_id: "zzzzz",
+        comment_id: "id-com-01",
+        user_id: "u001",
         like: 1
     }
 ]
@@ -66,6 +66,45 @@ export class CommentDatabaseMock extends BaseDatabase {
     }
 
     public async deleteComment(id: string): Promise<void> {
+        
+    }
+
+    public async findLikeDislike(commentId: string, userId: string): Promise<LikeDislikeCommentDB>{
+        const [result]: LikeDislikeCommentDB[]= likesDislikesMock.filter(like => like.user_id === userId && like.comment_id === commentId)
+
+        return result
+     }
+
+
+     public async createLikeDislike(LikeDislikeCommentDB:LikeDislikeCommentDB): Promise<void>{
+        
+    }
+
+    public async deleteLikeDislike(commentId: string, userId: string): Promise<void>{
+        
+    }
+
+    public async incrementLike(commentId: string): Promise<void>{
+        
+    }
+
+    public async decrementLike(commentId: string): Promise<void>{
+        
+    }
+
+    public async incrementDislike(commentId: string): Promise<void>{
+        
+    }
+
+    public async decrementDislike(commentId: string): Promise<void>{
+        
+    }
+
+    public async revertLikeToDislike(commentId: string): Promise<void>{
+        
+    }
+
+    public async revertDislikeToLike(commentId: string): Promise<void>{
         
     }
 }

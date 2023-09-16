@@ -11,10 +11,14 @@ export class TokenManagerMock {
       // login de fulano (conta normal)
       return "token-mock-fulano"
 
-    } else {
+    } else if (payload.id === "id-mock-ciclano") {
       // login de ciclano (conta admin)
       return "token-mock-ciclano"
+    } else if (payload.id === "id-mock-regiane") {
+      return "token-regiane"
     }
+
+    return ""
   }
 
   public getPayload = (token: string): TokenPayload | null => {
@@ -31,9 +35,14 @@ export class TokenManagerMock {
         name: "Ciclano",
         role: USER_ROLES.ADMIN
       }
-
-    } else {
-      return null
+    } else if (token === "token-regiane") {
+      return {
+        id: "id-mock-regiane",
+        name: "Regiane",
+        role: USER_ROLES.NORMAL
+      }
     }
+
+    return null
   }
 }

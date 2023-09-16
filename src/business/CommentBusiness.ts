@@ -3,13 +3,14 @@ import { PostDatabase } from "../database/PostDatabase";
 import { CommentCreateInputDTO } from "../dtos/comments/commentsCreate.dto";
 import { CommentDeleteInputDTO } from "../dtos/comments/commentsDelete.dto";
 import { CommentGetInputDTO, CommentsGetOutputDTO } from "../dtos/comments/commentsGet.dto";
+import { CommentLikeDislikeInputDTO } from "../dtos/comments/commentsLikeDislike.dto";
 import { CommentUpdateInputDTO } from "../dtos/comments/commentsUpdate.dto";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { USER_ROLES } from "../models/User";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
-import { CommentsDB } from "../types";
+import { CommentsDB, LikeDislikeCommentDB } from "../types";
 
 export class CommentBusiness {
     constructor(
@@ -116,5 +117,61 @@ export class CommentBusiness {
         }else{
             throw new BadRequestError("acesso negado.")
         }
+    }
+
+
+    public likeDislike = async(input: CommentLikeDislikeInputDTO) =>{
+        const {id: commentId, like, token} = input
+
+        const isLiked = Number(like)
+        
+        const payload = this.tokenManager.getPayload(token)
+        
+        if (payload === null) {
+            throw new BadRequestError("token invalido.")
+        }
+        const userId = payload.id
+
+        const result = await this.commentDatabase.findCommentById(commentId)
+
+        if(typeof result === 'undefined'){
+            throw new BadRequestError("Comentário não localizado.")
+        }
+        
+        const likeDislikeDB: LikeDislikeCommentDB = {
+            comment_id: commentId,
+            user_id: userId,
+            like: isLiked
+        }
+
+        const likeExist = await this.commentDatabase.findLikeDislike(commentId, userId)
+
+        if(!likeExist){
+            await this.commentDatabase.createLikeDislike(likeDislikeDB)
+            if(isLiked === 1){
+                await this.commentDatabase.incrementLike(commentId)
+            }else{
+                await this.commentDatabase.incrementDislike(commentId)
+            }
+        }else{
+            if(isLiked !== likeExist.like){
+                await this.commentDatabase.createLikeDislike(likeDislikeDB)
+                if(isLiked === 1){
+                    await this.commentDatabase.revertDislikeToLike(commentId)
+                }else{
+                    await this.commentDatabase.revertLikeToDislike(commentId)
+                }
+            }else{
+                await this.commentDatabase.deleteLikeDislike(commentId, userId)
+
+                if(isLiked === 1){
+                    await this.commentDatabase.decrementLike(commentId)
+                }else{
+                    await this.commentDatabase.decrementDislike(commentId) 
+                }
+            }
+            
+        }
+        
     }
 }

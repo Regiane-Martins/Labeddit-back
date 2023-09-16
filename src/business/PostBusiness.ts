@@ -137,7 +137,7 @@ export class PostBusiness {
             user_id: userId,
             like: isLiked
         }
-
+        
         const likeExist = await this.postDatabase.findLikeDislike(postId, userId)
 
         if(!likeExist){

@@ -39,6 +39,12 @@ export interface CommentsDB {
     updated_at: string
 }
 
+export interface LikeDislikeCommentDB {
+    comment_id: string,
+    user_id: string,
+    like: number
+}
+
 export interface CommentUserDB extends CommentsDB {
     userId: string,
     postId: string

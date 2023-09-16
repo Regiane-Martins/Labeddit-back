@@ -137,7 +137,7 @@ export class PostBusiness {
             user_id: userId,
             like: isLiked
         }
-
+        
         const likeExist = await this.postDatabase.findLikeDislike(postId, userId)
 
         if(!likeExist){
@@ -156,7 +156,7 @@ export class PostBusiness {
                     await this.postDatabase.revertLikeToDislike(postId)
                 }
             }else{
-                await this.postDatabase.deleteLikeDislike(postId, userId)// se clicar duas vezes deleta
+                await this.postDatabase.deleteLikeDislike(postId, userId)
 
                 if(isLiked === 1){
                     await this.postDatabase.decrementLike(postId)

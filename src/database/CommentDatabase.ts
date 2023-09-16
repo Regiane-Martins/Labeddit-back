@@ -1,4 +1,4 @@
-import { CommentUserDB, CommentsDB } from "../types";
+import { CommentUserDB, CommentsDB, LikeDislikeCommentDB } from "../types";
 import { BaseDatabase } from "./Basedatabase";
 
 export class CommentDatabase extends BaseDatabase {
@@ -53,5 +53,64 @@ export class CommentDatabase extends BaseDatabase {
 
     public async deleteComment(id: string): Promise<void> {
         await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS).del().where({id})
+    }
+
+
+    public async findLikeDislike(commentId: string, userId: string): Promise<LikeDislikeCommentDB>{
+        const [result]: LikeDislikeCommentDB[]=  await BaseDatabase.connection("likedislike_comments")
+        .where({comment_id: commentId})
+        .andWhere({user_id: userId})
+        return result
+     }
+
+
+     public async createLikeDislike(LikeDislikeCommentDB:LikeDislikeCommentDB): Promise<void>{
+        await BaseDatabase.connection("likedislike_comments")
+        .insert(LikeDislikeCommentDB).onConflict(['user_id', 'comment_id'])
+        .merge()
+    }
+
+    public async deleteLikeDislike(commentId: string, userId: string): Promise<void>{
+        await BaseDatabase.connection("likedislike_comments").del()
+        .where({comment_id: commentId})
+        .andWhere({user_id: userId})
+    }
+
+    public async incrementLike(commentId: string): Promise<void>{
+        await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
+        .where({id: commentId})
+        .increment('like')
+    }
+
+    public async decrementLike(commentId: string): Promise<void>{
+        await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
+        .where({id: commentId})
+        .decrement('like')
+    }
+
+    public async incrementDislike(commentId: string): Promise<void>{
+        await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
+        .where({id: commentId})
+        .increment('dislike')
+    }
+
+    public async decrementDislike(commentId: string): Promise<void>{
+        await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
+        .where({id: commentId})
+        .decrement('dislike')
+    }
+
+    public async revertLikeToDislike(commentId: string): Promise<void>{
+        await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
+        .where({id: commentId})
+        .increment('dislike')
+        .decrement('like')
+    }
+
+    public async revertDislikeToLike(commentId: string): Promise<void>{
+        await BaseDatabase.connection(CommentDatabase.TABLE_COMMENTS)
+        .where({id: commentId})
+        .increment('like')
+        .decrement('dislike')
     }
 }

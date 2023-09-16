@@ -6,13 +6,14 @@ import { commentCreateSchema } from "../dtos/comments/commentsCreate.dto";
 import { commentGetAllSchema } from "../dtos/comments/commentsGet.dto";
 import { commentUpdateSchema } from "../dtos/comments/commentsUpdate.dto";
 import { commentDeleteSchema } from "../dtos/comments/commentsDelete.dto";
+import { commentLikeDislikeSchema } from "../dtos/comments/commentsLikeDislike.dto";
 
 export class CommentController {
     constructor(
         private commentBusiness: CommentBusiness
-    ){}
+    ) { }
 
-    public create = async(req: Request, res: Response)=>{
+    public create = async (req: Request, res: Response) => {
         try {
 
             const input = commentCreateSchema.parse({
@@ -24,7 +25,7 @@ export class CommentController {
             await this.commentBusiness.create(input)
 
             res.sendStatus(201)
-            
+
         } catch (error) {
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
@@ -36,7 +37,7 @@ export class CommentController {
         }
     }
 
-    public getAll = async(req: Request, res: Response) => {
+    public getAll = async (req: Request, res: Response) => {
         try {
 
             const input = commentGetAllSchema.parse({
@@ -46,7 +47,7 @@ export class CommentController {
             const output = await this.commentBusiness.get(input)
 
             res.status(200).send(output)
-            
+
         } catch (error) {
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
@@ -58,7 +59,7 @@ export class CommentController {
         }
     }
 
-    public update = async(req: Request, res: Response) => {
+    public update = async (req: Request, res: Response) => {
         try {
             const input = commentUpdateSchema.parse({
                 id: req.params.id,
@@ -69,7 +70,7 @@ export class CommentController {
             await this.commentBusiness.update(input)
 
             res.status(200).send({ message: "Updated" })
-            
+
         } catch (error) {
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
@@ -81,7 +82,7 @@ export class CommentController {
         }
     }
 
-    public delete = async(req: Request, res: Response) =>{
+    public delete = async (req: Request, res: Response) => {
         try {
             const input = commentDeleteSchema.parse({
                 id: req.params.id,
@@ -101,6 +102,32 @@ export class CommentController {
             }
         }
 
+
+    }
+
+
+    public likeDislike = async (req: Request, res: Response) => {
+        try {
+            const input = commentLikeDislikeSchema.parse({
+                id: req.params.id,
+                like: req.body.like,
+                token: req.headers.authorization
+            })
+
+            await this.commentBusiness.likeDislike(input)
+
+            res.sendStatus(200)
+        } catch (error) {
+            console.log(error);
+
+            if (error instanceof ZodError) {
+                res.status(400).send(error.issues)
+            } else if (error instanceof BaseError) {
+                res.status(error.statusCode).send(error.message)
+            } else {
+                res.status(500).send("Erro inesperado")
+            }
+        }
 
     }
 }

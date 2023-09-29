@@ -113,4 +113,14 @@ export class CommentDatabase extends BaseDatabase {
         .increment('like')
         .decrement('dislike')
     }
+
+    public async incrementeComment(idPost: string): Promise<void>{
+        await BaseDatabase.connection("post").where({id: idPost})
+        .increment("comments")
+    }
+
+    public async decrementComment(idPost: string): Promise<void>{
+        await BaseDatabase.connection("post").where({id: idPost})
+        .decrement("comments")
+    }
 }

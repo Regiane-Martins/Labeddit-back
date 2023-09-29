@@ -49,6 +49,7 @@ export class CommentBusiness {
         }
 
         await this.commentDatabase.createComment(newComment)
+        await this.commentDatabase.incrementeComment(post_id)
     }
 
     public get = async(input: CommentGetInputDTO): Promise<CommentsGetOutputDTO[]> =>{
@@ -114,6 +115,7 @@ export class CommentBusiness {
 
         if(payload.id === result.creator_id || payload.role === USER_ROLES.ADMIN){
             await this.commentDatabase.deleteComment(id)
+            await this.commentDatabase.decrementComment(result.post_id)
         }else{
             throw new BadRequestError("acesso negado.")
         }

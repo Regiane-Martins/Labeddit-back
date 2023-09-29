@@ -1,4 +1,4 @@
--- Active: 1693846937653@@127.0.0.1@3306
+-- Active: 1696007104605@@127.0.0.1@1433
 
 CREATE TABLE
     users(
@@ -17,10 +17,13 @@ CREATE TABLE
         content TEXT NOT NULL,
         likes INTEGER,
         dislikes INTEGER,
+        comments INTEGER,
         created_at TEXT DEFAULT(DATETIME()),
         updated_at TEXT DEFAULT(DATETIME()),
         FOREIGN KEY (creator_id) REFERENCES users(id)
     );
+
+    
 
 CREATE TABLE
     likes_dislikes(

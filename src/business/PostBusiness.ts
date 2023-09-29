@@ -33,6 +33,7 @@ export class PostBusiness {
             creator_id: result.id,
             likes: 0,
             dislikes: 0,
+            comments: 0,
             created_at: new Date().toISOString(),
             updated_at: new Date().toISOString()
         }
@@ -57,6 +58,7 @@ export class PostBusiness {
             content: post.content,
             likes: post.likes,
             dislikes: post.dislikes,
+            comments: post.comments,
             created_at: post.created_at,
             updated_at: post.updated_at,
             creator: {

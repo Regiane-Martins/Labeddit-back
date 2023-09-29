@@ -24,6 +24,8 @@ export class PostController {
     
             res.sendStatus(201)
         } catch (error) {
+            console.log(error);
+            
             if (error instanceof ZodError) {
                 res.status(400).send(error.issues)
             } else if (error instanceof BaseError) {

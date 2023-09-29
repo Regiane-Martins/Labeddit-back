@@ -9,6 +9,7 @@ export interface PostGetOutputDTO {
     content: string,
     likes: number,
     dislikes: number,
+    comments: number,
     created_at: string,
     updated_at: string,
     creator: {

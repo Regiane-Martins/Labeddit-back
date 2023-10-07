@@ -107,4 +107,12 @@ export class CommentDatabaseMock extends BaseDatabase {
     public async revertDislikeToLike(commentId: string): Promise<void>{
         
     }
+
+    public async incrementeComment(idPost: string): Promise<void>{
+        
+    }
+
+    public async decrementComment(idPost: string): Promise<void>{
+        
+    }
 }

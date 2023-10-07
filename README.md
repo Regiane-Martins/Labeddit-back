@@ -8,6 +8,7 @@
 
 * [Requisições (Paths)](#requisições)
 * [Exemplo de Requisições](#exemplo-de-requisições)
+* [Tetes](#exemplo-testes)
 * [Documentação Postman](#documentação-postman)
 * [Tecnologias](#tecnoligias)
 * [Acesso ao Projeto](#acesso-ao-projeto)
@@ -174,6 +175,9 @@ Created
 ```json
 OK
 ```
+
+# Testes 
+![Testes](./src//img/testes.png)
 
 
 # Documentação do Postman
